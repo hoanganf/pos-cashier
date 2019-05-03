@@ -1,7 +1,5 @@
-var imageHost='../pos-upload/';
-var apiUrl='../pos-local-api/';
 function loadOrderGroupByTableInArea(areaId){
-  var link=apiUrl+"order.php";
+  var link=window.window.apiUrl+"order.php";
   if(parseInt(areaId)>0){
     link+="?areaId="+areaId;
   }
@@ -27,7 +25,7 @@ function loadOrderGroupByTableInArea(areaId){
         else $this.removeClass('active');
       });
     }else{
-      if(response.code == 306) location.href='../login?from='+location.href;
+      if(response.code == 306) location.href=window.loginUrl+'?from='+location.href;
       else showAlertDialog('That bai',response.message,false,false);
     }
   });
@@ -43,7 +41,7 @@ function deleteOrder(event,numberId){
     $modalDialog.find('.modal-dialog__ok').off('click');
     closeAlertDialog();
     $.ajax({
-         url: apiUrl+"order.php",
+         url: window.apiUrl+"order.php",
          type : "POST",
          contentType : 'application/json',
          data : JSON.stringify({number_id:numberId,data:[]}),
@@ -53,7 +51,8 @@ function deleteOrder(event,numberId){
            if(response.status === true && parseInt(response.message) === 0){
              $(event.target).parent().parent().remove();
            }else{
-             showAlertDialog('That bai',response.message,false,false);
+             if(response.code == 306) location.href=window.loginUrl+'?from='+location.href;
+             else showAlertDialog('That bai',response.message,false,false);
            }
          },
          error: function(xhr, resp, text){

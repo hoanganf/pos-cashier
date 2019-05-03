@@ -15,5 +15,10 @@
     </div>
   </div>
 </div>
+<script>
+window.imageUrl='<?php echo IMAGE_DIR; ?>';
+window.apiUrl='<?php echo API_DIR; ?>';
+window.loginUrl='<?php echo LOGIN_DIR; ?>';
+</script>
 <script type="text/javascript" src="<?php echo constant('LIB_DIR'); ?>js/jquery.dragBar.js"></script>
 <script type="text/javascript" src="<?php echo constant('LIB_DIR'); ?>js/common_script.js"></script>

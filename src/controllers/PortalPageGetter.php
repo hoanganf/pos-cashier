@@ -6,7 +6,7 @@
 	include_once constant("MODEL_DIR").'CashierPageBuilder.php';
 	include_once constant("MODEL_DIR").'OrderPageBuilder.php';
 	include_once constant("MODEL_DIR").'CheckOutPageBuilder.php';
-	class CashierPageGetter extends PageGetter{
+	class PortalPageGetter extends PageGetter{
 		public function buildHtml($pageId,$pageResource){
 			switch ($pageId) {
         case 'order':

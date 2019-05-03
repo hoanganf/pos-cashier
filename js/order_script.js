@@ -1,4 +1,3 @@
-var apiUrl='../pos-local-api/';
 function getOrder(isCheckOutAfterSubmit=false){
   var $rows=$tableBody.children();
   var rowCount=$rows.length;
@@ -35,11 +34,12 @@ function getOrder(isCheckOutAfterSubmit=false){
   dbParam = JSON.stringify(orders);
   console.log(dbParam);
   $.ajax({
-       url: apiUrl+"order.php",
+       url: window.apiUrl+"order.php",
        type : "POST",
        contentType : 'application/json',
        data : dbParam,
        success : function(result) {
+         console.log(result);
          var response=JSON.parse(result);
          if(response.status === true){
            console.log(response);
@@ -54,7 +54,7 @@ function getOrder(isCheckOutAfterSubmit=false){
              location.href='index.php?pageId=cashier';
            }
          }else{
-           if(response.code == 306) location.href='../login?from='+location.href;
+           if(response.code == 306) location.href=window.loginUrl+'?from='+location.href;
            else showAlertDialog('That bai',response.message,false,false);
          }
        },
@@ -180,7 +180,11 @@ function onOrderProductCommentClick(name){
       console.log($tdChilds.text());
       if($tdChilds.length>1){
         var comment=$tdChilds.eq(1);
-        comment.html(comment.text()+', ' +name);
+        if(comment.text().length>0){
+          comment.text(comment.text()+', ' +name);
+        }else{
+          comment.text(name);
+        }
       }else{
         $td.append('<div>'+name+'</div>');
       }
@@ -190,7 +194,7 @@ function onOrderProductCommentClick(name){
 
 function loadOrderProducts(element) {
   var selectedCateId=$(element).data("id");
-  var link=apiUrl+'product.php?categoryId='+selectedCateId;
+  var link=window.apiUrl+'product.php?categoryId='+selectedCateId;
   $.getJSON(link, function(response){
     if(response.status === true){
       var $productList= $('#order_center_list');
@@ -206,7 +210,7 @@ function loadOrderProducts(element) {
         else $this.removeClass('active');
       });
     }else{
-      if(response.code == 306) location.href='../login?from='+location.href;
+      if(response.code == 306) location.href=window.loginUrl+'?from='+location.href;
       else showAlertDialog('That bai',response.message,false,false);
     }
   });
@@ -215,7 +219,7 @@ function loadOrderProducts(element) {
 /*function loadProductComments(pId){
   var $commentList= $('#order_bottom_list');
   $commentList.empty();
-  var link=apiUrl+'comment.php?productId='+pId;
+  var link=window.apiUrl+'comment.php?productId='+pId;
   $.getJSON(link, function(response){
     if(response.status === true){
       //title
@@ -238,8 +242,22 @@ function hideComments(){
   $('#order_bottom_list').addClass("hide");
 }
 //reload table list when change area
-$('#select_area').on('change', function(event){
-  $('#select_table').load('view.php?action=loadTables_option&areaId='+$(event.target).val());
+$('#select_area').on('change', function(){
+  var areaId=$(event.target).val();
+  var link=window.apiUrl+'table.php?areaId='+areaId;
+  $.getJSON(link, function(response){
+    if(response.status === true){
+      var $tableZone= $('#select_table');
+      $tableZone.empty();
+      $.each(response.tables, function(i, table){
+        $tableZone.append('<option value="'+table.id+'">'+table.name+'</option>');
+      });
+
+    }else{
+      if(response.code == 306) location.href=window.loginUrl+'?from='+location.href;
+      else showAlertDialog('That bai',response.message,false,false);
+    }
+  });
 });
 //table set click add addEventListener
 $tableBody=$("#ordered_list_table tbody");
