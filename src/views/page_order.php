@@ -58,7 +58,7 @@
         <div class="hover--blue" onclick="onOrderProductClick(<?php echo $product['id'].",'".$product['name']."',".$product['add_count'].",".$product['price'] ?>);" ><?php echo $product['name']; ?></div>
       <?php } ?>
       </div>
-			<div id="order_bottom_list" class="grid-container padding--top">
+			<div id="order_bottom_list" class="hide grid-container padding--top">
       <?php
       foreach( $resource->productComments as $productComment){?>
         <div class="hover--green"  onclick="onOrderProductCommentClick('<?php echo $productComment['name']."'" ?>);" ><?php echo $productComment['name']; ?></div>

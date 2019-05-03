@@ -88,6 +88,7 @@ function removeAllOrder(){
   });
   $tableBody.data('currentPressedIndex',undefined);
   sumPriceAndDisplay();
+  hideComments();
 }
 function onOrderProductClick(id,name,count,price,comment){
   var $trs=$tableBody.children();
@@ -152,6 +153,7 @@ function onDeleteRow(target){
     }
   }
   sumPriceAndDisplay();
+  if($tableBody.children().length<2) hideComments();
   event.stopPropagation();
 }
 function sumPriceAndDisplay(){
@@ -209,7 +211,8 @@ function loadOrderProducts(element) {
     }
   });
 }
-function loadProductComments(pId){
+/* NOT USE */
+/*function loadProductComments(pId){
   var $commentList= $('#order_bottom_list');
   $commentList.empty();
   var link=apiUrl+'comment.php?productId='+pId;
@@ -224,8 +227,15 @@ function loadProductComments(pId){
     }
   });
 }
+*/
 function removePressedTableRow(){
   $tableBody.find('.pressed--forcus').removeClass('pressed--forcus')
+}
+function showCommentComments(){
+  $('#order_bottom_list').removeClass("hide");
+}
+function hideComments(){
+  $('#order_bottom_list').addClass("hide");
 }
 //reload table list when change area
 $('#select_area').on('change', function(event){
@@ -241,5 +251,6 @@ $tableBody.on('click','tr:has(td)',function(event){
   $this.addClass('pressed--forcus');
   $tableBody.data('currentPressedIndex',thisIndex);
   console.log("click "+(thisIndex)+"of "+($rows.length)+" with pID="+$(this).data('pid'));
-  loadProductComments($(this).data('pid'))
+  showCommentComments();
+  //loadProductComments($(this).data('pid')) not use
 });

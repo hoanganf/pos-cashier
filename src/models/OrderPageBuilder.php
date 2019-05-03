@@ -4,6 +4,7 @@
 	include_once constant("MODEL_DIR").'dao/TableDAO.php';
 	include_once constant("MODEL_DIR").'dao/CategoryDAO.php';
 	include_once constant("MODEL_DIR").'dao/ProductDAO.php';
+	include_once constant("MODEL_DIR").'dao/CommentDAO.php';
 	class OrderPageBuilder implements PageBuilder{
 		public function buildHtml($resource){
 			if(is_numeric($resource->numberId)){
@@ -29,7 +30,8 @@
 			}else{
 				$resource->products=array();
 			}
-			$resource->productComments=array();
+			$adapter=new CommentDAO();
+			$resource->productComments=$adapter->getAll();
 			include constant('VIEW_DIR').'page_order.php';
 		}
 	}
